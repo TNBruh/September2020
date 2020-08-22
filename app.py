@@ -3,11 +3,8 @@ This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
 from flask import Flask, request, g, render_template, Response
-from flask_cors import CORS
-from flask_socketio import SocketIO, join_room, send
-from flask_restful import Resource, Api
 from FractalDatabase import GetDB
-from Controller import controller
+from controller import controller
 
 app = Flask(__name__)
 
@@ -19,7 +16,6 @@ app.config['SECRET_KEY'] = 'cheekibreeki'
 app.config['CORS_ORIGINS'] = "*"
 app.config['CORS_HEADERS'] = ['Content-Type']
 app.debug = True
-CORS(app)
 
 app.register_blueprint(controller, url_prefix="/api")
 

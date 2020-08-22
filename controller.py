@@ -6,7 +6,7 @@ import FractalDatabase
 
 from cryptography.fernet import Fernet
 
-supermagnusmagnusthegreatkingofcomputerkey = "DingusMagistusCactusArmatus"
+supermagnusmagnusthegreatkingofcomputerkey = b'ZmDfcTF7_60GrrY167zsiPd67pEvs0aGOv2oasOM1Pg='
 
 crypt = Fernet(supermagnusmagnusthegreatkingofcomputerkey)
 
@@ -19,7 +19,7 @@ def login():
         data = request.get_json()
         result = userM.Login(data["nim"], data["password"])
         if result is not None:
-            result["nim"] = crypt.encrypt(result["nim"])
+            result["nim"] = crypt.encrypt(str(result["nim"]))
             return {"success":"true", "data":result}
         else:
             return {"success":"false", "data":""}
@@ -35,7 +35,7 @@ def vote():
         decrypted = crypt.decrypt(data["nim"])
         voter = FractalDatabase.GetDB().GetDocument("Student", {"nim":decrypted})
         if (voter is not None):
-            if (!voter["voted"]):
+            if (~voter["voted"]):
                 userM.Vote(voter["_id"], data["candidate"])
             else:
                 if (data["candidate2"] != "None"):
